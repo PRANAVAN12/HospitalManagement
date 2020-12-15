@@ -227,7 +227,7 @@ $user = $_SESSION['username'];
     <?php
  $doctor = mysqli_query($mysqli,"SELECT * FROM doctors");
  while($m_row = mysqli_fetch_array($doctor))        
-        echo("<option value = '" . $m_row['fullname'] . "'>" ."Dr. ". $m_row['fullname'] . "</option>");
+        echo("<option value = '" . $m_row['username'] . "'>" ."Dr. ". $m_row['username'] . "</option>");
     ?>
 </select>
     <!--  -->

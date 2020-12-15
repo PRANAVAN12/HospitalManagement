@@ -11,7 +11,7 @@ if(isset($_POST['update']))
 	$mobile = mysqli_real_escape_string($mysqli, $_POST['mobile']);
 	$doctor = mysqli_real_escape_string($mysqli, $_POST['doctor']);
 	$reason = mysqli_real_escape_string($mysqli, $_POST['reason']);
-
+	$status = mysqli_real_escape_string($mysqli, $_POST['status']);
 
 	// checking empty fields
 	if(empty($date) || empty($time) || empty($mobile) || empty($username) || empty($reason) || empty($doctor)) {
@@ -42,7 +42,7 @@ if(isset($_POST['update']))
 				
 	} else {	
 		//updating the table
-		$result = mysqli_query($mysqli, "UPDATE appointment SET username='$username',date='$date',mobile='$mobile' ,time='$time',reason='$reason',doctor='$doctor' WHERE id=$id");
+		$result = mysqli_query($mysqli, "UPDATE appointment SET username='$username',date='$date',mobile='$mobile' ,time='$time',reason='$reason',doctor='$doctor',status='$status' WHERE id=$id");
 		
 		//redirectig to the display page. In our case, it is index.php
 		header("Location: List.php");
@@ -67,7 +67,7 @@ if(sizeof($_GET)!=0){
 		$date = $res['date'];
 		$time = $res['time'];
 		$reason = $res['reason'];
-		
+		$status = $res['status'];
 	
 	}
 
@@ -81,9 +81,34 @@ if(sizeof($_GET)!=0){
 		href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 		
 		crossorigin="anonymous">
+
+		<link rel="stylesheet"
+		href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		
+		crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+		<style>
+
+body {
+  
+    background-color: #607D8B;
+}
+.card {
+
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .55rem;
+    margin-right: 32%;
+    margin-left: 18%;
+    border: 4px solid #f0f0f0;
+    margin-bottom: 1.875rem;
+}
+		</style>
 	</head>
 	<body>
-	<?php include '../../View/headers/adminheader.html';?>
+
 			<div class="container" style="margin-left: 20%; padding-top:5%">
 			<div class="card">
 				<div class="card-body">
@@ -91,7 +116,7 @@ if(sizeof($_GET)!=0){
 					<caption>
 						<h2>
 					
-							Edit Prescription
+							Edit Appointment
 					</h2>
 					</caption>
 					<fieldset class="form-group">
@@ -102,12 +127,12 @@ if(sizeof($_GET)!=0){
 	
 					<fieldset class="form-group">
 						<label> Date</label> <input type="text"
-						value="<?php echo $date;?>"	 class="form-control"
+						id="datepicker" readonly 	value="<?php echo $date;?>"	 class="form-control"
 							name="date">
 					</fieldset>
 					<fieldset class="form-group">
 						<label> Time</label> <input type="text"
-						 class="form-control"
+						 class="form-control" id="timepicker" readonly
 						 value="<?php echo $time;?>"	name="time" required="required">
 					</fieldset>
 	
@@ -116,6 +141,8 @@ if(sizeof($_GET)!=0){
 							 class="form-control"
 							 value="<?php echo $doctor;?>"	name="doctor">
 					</fieldset>
+
+					
 					<fieldset class="form-group">
 						<label> Contact No</label> <input type="text"
 							 class="form-control"
@@ -127,6 +154,14 @@ if(sizeof($_GET)!=0){
 						value="<?php echo $reason;?>" 	 class="form-control"
 							name="reason">
 					</fieldset>
+
+					<fieldset class="form-group">
+						<label> Status</label>	
+						<select class="form-control" name="status" id="cars" value="<?php echo $status;?>" >
+ 					 <option value="Completed">Completed</option>
+  					<option value="Canceled">Canceled</option>
+						</select>
+					</fieldset>
 					<td><input type="hidden" name="id" value="<?php echo $_GET['id'];?>"></td>
 					<button type="submit" name="update"  class="btn btn-success">Save</button>
 					</form>
@@ -135,3 +170,13 @@ if(sizeof($_GET)!=0){
 		</div>
 	</body>
 	</html>
+
+	<script>
+     $('#datepicker').datepicker({
+            uiLibrary: 'bootstrap'
+        });
+
+        $('#timepicker').timepicker({
+            uiLibrary: 'bootstrap'
+        });
+    </script>

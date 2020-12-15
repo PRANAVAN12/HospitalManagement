@@ -61,6 +61,22 @@ if(isset($_POST['Submit'])) {
 		href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 		
 		crossorigin="anonymous">
+		<style>
+
+body {
+  
+    background-color: #607D8B;
+}
+.card {
+
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .55rem;
+    margin-right: 32%;
+    margin-left: 18%;
+    border: 4px solid #f0f0f0;
+    margin-bottom: 1.875rem;
+}
+		</style>
 	</head>
 	
 <?php
@@ -83,7 +99,7 @@ if(sizeof($_GET)!=0){
 }
 ?>
 	<body>
-	<?php include '../../View/headers/adminheader.html';?>
+	
 			<div class="container" style="margin-left: 20%; padding-top:5%">
 			<div class="card">
 				<div class="card-body">

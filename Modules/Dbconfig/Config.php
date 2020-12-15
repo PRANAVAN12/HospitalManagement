@@ -12,7 +12,7 @@ $mysqli = mysqli_connect($databaseHost, $databaseUsername, $databasePassword, $d
 if (!$mysqli) {
     // die("Connection failed: " . mysqli_connect_error());
 
-				//redirectig to the display page. In our case, it is index.php
+				//redirectig to the display page. In our case, it is index.phpd
 				header("Location: ../../View/ConnectionFail.html");
 
 
