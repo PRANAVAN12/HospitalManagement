@@ -2,48 +2,182 @@
 //including the database connection file
 include_once("../Dbconfig/Config.php");
 
+
+
+
+error_reporting(0);
+if(count($_POST)>0) {
+$username=$_POST[username];
+$result2 = mysqli_query($mysqli,"SELECT * FROM appointment where username='$username' ");
+}
+elseif (!count($_POST)>0) {
 //fetching data in descending order (lastest entry first)
 //$result = mysql_query("SELECT * FROM users ORDER BY id DESC"); // mysql_query is deprecated
 $result = mysqli_query($mysqli, "SELECT * FROM appointment ORDER BY id DESC"); // using mysqli_query instead
+}
+
 ?>
-<html>
+
+<!DOCTYPE html>
+<html lang="en">
+    
 <head>
-
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-	crossorigin="anonymous">
-</head>
-<body>
-<a href="../../"></a>
-<?php include '../../View/headers/adminheader.html';?>
-		<div class="container" style="margin-left: 20%; padding-top:5%">
-			<h3 class="text-center">List of Appointments</h3>
-			<hr>
-			<div class="container text-left">
-
-				<a href="add.php" class="btn btn-success">Add Appointment</a>
-			</div>
+<meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+		<!-- Bootstrap CSS -->
+		<!-- Fontawesome CSS -->
+		<link rel="stylesheet" href="../assets/css/font-awesome.min.css">	
+				<!-- Fontawesome CSS -->
+				<link rel="stylesheet" href="../assets/plugins/fontawesome/css/fontawesome.min.css">
+		<link rel="stylesheet" href="../assets/plugins/fontawesome/css/all.min.css">	
+		<!-- Feathericon CSS -->
+        <link rel="stylesheet" href="../assets/css/feathericon.min.css">	
+		<!-- Datatables CSS -->
+		<link rel="stylesheet" href="../assets/plugins/datatables/datatables.min.css">		
+		<!-- Main CSS -->
+		<link rel="stylesheet" href="../assets/css/style.css">
 			
-			<br>
-			<table class="table table-bordered">
-				<thead>
-					<tr>
-					
-						
-						   <th>Date</th>
-						<th>Time</th>
-                        <th>Username</th>
-                        <th>Mobile</th>		
-						<th>Doctor</th>
-						<th>Reason</th>
-                        <th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-				
-				<?php 
+
+		<link rel="stylesheet" href="../assets/css/bootstrap.min.css">	
+			<!-- Main CSS -->
+	<link rel="stylesheet" href="../assets/css/style.css">
+	<style>
+.btn-primary {
+    background-color: #09e5ab;
+    border: 1px solid #09e5ab;
+    margin-left: 3px;
+}
+.cont{
+	margin-left:0px !important;
+}
+.page-wrapper {
+    margin-left: 240px;
+    padding-top: 9px;
+    position: relative;
+    transition: all 0.4s ease;
+}
+.status{
 	
+    background-color: green;
+    padding: 0px 7px;
+    color: white;
+    height: 9px;
+    border-radius: 11px;
+}
+.status1{
+	
+    background-color: red;
+    padding: 0px 7px;
+    color: white;
+    height: 9px;
+    border-radius: 11px;
+}
+.status2{
+	
+    background-color: yellow;
+    padding: 0px 7px;
+    color: white;
+    height: 9px;
+    border-radius: 11px;
+}
+
+</style>
+
+    </head>
+    <body>
+	
+	
+<div>
+		
+		
+	
+				
+<?php include '../../View/headers/newadmin.html';?>
+        
+			
+			<!-- Page Wrapper -->
+            <div class="page-wrapper">
+                <div class="content container-fluid">	
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row">
+							<div class="col-sm-12">
+								<h3 class="page-title">List of Appoitnments</h3>
+								<ul class="breadcrumb">
+									
+									<li class="breadcrumb-item"><a href="">Dashboard</a></li>		
+									<li class="breadcrumb-item"><a href="">Admin</a></li>
+									<li class="breadcrumb-item active"><a href="List.php">Appoitnments</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+
+
+
+
+
+					<div class="container text-right">
+
+					<a href="add.php" class="btn btn-success">Add Appoitment</a>
+		</div>
+		
+		
+		<div class="cont">
+
+		<form class="form-inline" method="post" action="List.php">
+    <input type="text" name="username" class="form-control" placeholder="Search  Patient ">
+	<button type="submit" name="save" class="btn btn-primary">Search</button>
+</form>			</div>
+		<br>
+	
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="table-responsive">
+										<div class="table-responsive">
+										<table class="datatable table table-hover table-center mb-0">
+											<thead>
+											<tr>
+					
+										
+												<th>Date</th>
+												<th>Time</th>
+												<th>Patient</th>
+												<th>Mobile</th>		
+												<th>Doctor</th>
+												<th>Reason</th>
+												<th>Status</th>
+												<th>Actions</th>
+											
+											 </tr>
+											</thead>
+											<tbody>
+		<?php	if($result2){
+
+while($res = mysqli_fetch_array($result2)) { 
+	echo "<tr>";
+	echo "<td>".$res['date']."</td>";
+	echo "<td>".$res['time']."</td>";
+	echo "<td>".$res['username']."</td>";	
+	echo "<td>".$res['mobile']."</td>";	
+	echo "<td>".$res['doctor']."</td>";
+	echo "<td>".$res['reason']."</td>";
+	if ($res['status']=="Completed"){
+		echo "<td>"."<span class='status'>".$res['status']."</span>"."</td>";
+	  }elseif($res['status']=="Pending"){
+		echo "<td>"."<span class='status2'>".$res['status']."</span>"."</td>";
+	  }
+	  else {
+		echo "<td>"."<span class='status1' >".$res['status']."</span>"."</td>";
+	  }
+	echo "<td><a href=\"edit.php?id=$res[id]\"><i class='fe fe-pencil'>Edit</i>    </a> | <a href=\"delete.php?id=$res[id]\" onClick=\"return confirm('Are you sure you want to delete?')\">Delete</a></td>";		
+	}
+
+}
+		elseif(!$result2){
 		while($res = mysqli_fetch_array($result)) { 	
 			echo "<tr>";
 			echo "<td>".$res['date']."</td>";
@@ -52,13 +186,50 @@ $result = mysqli_query($mysqli, "SELECT * FROM appointment ORDER BY id DESC"); /
 			echo "<td>".$res['mobile']."</td>";	
 			echo "<td>".$res['doctor']."</td>";
 			echo "<td>".$res['reason']."</td>";
-		echo "<td><a href=\"edit.php?id=$res[id]\">Edit</a> | <a href=\"delete.php?id=$res[id]\" onClick=\"return confirm('Are you sure you want to delete?')\">Delete</a></td>";		
+			if ($res['status']=="Completed"){
+				echo "<td>"."<span class='status'>".$res['status']."</span>"."</td>";
+			  }elseif($res['status']=="Pending"){
+				echo "<td>"."<span class='status2'>".$res['status']."</span>"."</td>";
+			  }
+			  else {
+				echo "<td>"."<span class='status1' >".$res['status']."</span>"."</td>";
+			  }
+	
+		echo "<td><a href=\"edit.php?id=$res[id]\"><i class='fe fe-pencil mr-2'>Edit</i></a> | <a href=\"delete.php?id=$res[id]\" onClick=\"return confirm('Are you sure you want to delete?')\">Delete</a></td>";		
 	}
-	?>
-				</tbody>
-
-			</table>
+		}
+					?>	</tbody>
+										</table>
+									</div>
+									</div>
+								</div>
+							</div>
+						</div>			
+					</div>
+					
+			
+			<!-- /Page Wrapper -->
 		</div>
-	</div>
-</body>
+        </div>
+		<!-- /Main Wrapper -->
+		
+		<!-- jQuery -->
+        <script src="../../View/home/assets/js/jquery-3.2.1.min.js"></script>
+		
+		<!-- Bootstrap Core JS -->
+        <script src="../../View/home/assets/js/popper.min.js"></script>
+        <script src="../../View/home/assets/js/bootstrap.min.js"></script>
+		
+		<!-- Slimscroll JS -->
+        <script src="../../View/home/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+		
+		<!-- Datatables JS -->
+		<script src="../../View/home/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="../../View/home/assets/plugins/datatables/datatables.min.js"></script>
+		
+		<!-- Custom JS -->
+		<script  src="../../View/home/assets/js/script.js"></script>
+		
+    </body>
+
 </html>

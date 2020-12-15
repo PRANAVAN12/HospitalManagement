@@ -68,9 +68,31 @@ if(isset($_POST['Submit'])) {
 		href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 		
 		crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+
+		<style>
+
+body {
+  
+    background-color: #607D8B;
+}
+.card {
+
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .55rem;
+    margin-right: 32%;
+    margin-left: 18%;
+    border: 4px solid #f0f0f0;
+    margin-bottom: 1.875rem;
+}
+		</style>
 	</head>
 	<body>
-	<?php include '../../View/headers/adminheader.html';?>
+
 			<div class="container" style="margin-left: 20%; padding-top:5%">
 			<div class="card">
 				<div class="card-body">
@@ -89,20 +111,26 @@ if(isset($_POST['Submit'])) {
 	
 					<fieldset class="form-group">
 						<label> Date</label> <input type="text"
-							 class="form-control"
+						id="datepicker" readonly 	 class="form-control"
 							name="date">
 					</fieldset>
 					<fieldset class="form-group">
 						<label> Time</label> <input type="text"
-						 class="form-control"
+						 class="form-control" id="timepicker" readonly
 							name="time" required="required">
 					</fieldset>
 	
-					<fieldset class="form-group">
-						<label> Doctor</label> <input type="text"
-							 class="form-control"
-							name="doctor">
-					</fieldset>
+					
+
+					<select class="form-control" name="doctor">
+    <option value="">Doctors</option>
+    <?php
+ $doctor = mysqli_query($mysqli,"SELECT * FROM doctors");
+ while($m_row = mysqli_fetch_array($doctor))        
+        echo("<option value = '" . $m_row['username'] . "'>" ."Dr. ". $m_row['username'] . "</option>");
+    ?>
+</select>
+
 					<fieldset class="form-group">
 						<label> Contact Num</label> <input type="text"
 							 class="form-control"
@@ -121,3 +149,12 @@ if(isset($_POST['Submit'])) {
 		</div>
 	</body>
 	</html>
+	<script>
+     $('#datepicker').datepicker({
+            uiLibrary: 'bootstrap'
+        });
+
+        $('#timepicker').timepicker({
+            uiLibrary: 'bootstrap'
+        });
+    </script>

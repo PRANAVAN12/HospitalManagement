@@ -2,20 +2,19 @@
 	session_start();
 	// variable declaration
 	$username="";
-	$password="";
+
 	$errors = array(); 
 	$_SESSION['success'] = "";
 
 	// connect to database
 	$db = mysqli_connect('localhost', 'root', '', 'hospital');
-	echo"hiiiiii               ";
-	echo isset($_POST['login_user']);
+
 	// LOGIN USER
 	if (isset($_POST['login_user'])) {
 	
 		$username = filter_input(INPUT_POST, 'username');
 		$password = filter_input(INPUT_POST, 'password');
-echo $username;
+
 		if (empty($username)) {
 			array_push($errors, "username is required");
 		}
@@ -23,7 +22,7 @@ echo $username;
 			array_push($errors, "Password is required");
 		}
 		if (count($errors) == 0) {
-			echo"hiii";
+		
 			$query = "SELECT * FROM users WHERE username='$username' AND password='$password'";
 			$results = mysqli_query($db, $query);
 			$user=mysqli_fetch_assoc($results);
@@ -35,8 +34,12 @@ echo $username;
 
 				echo $_SESSION['success'];
 				header('location: ../../Appointment/user/List.php');
-			}else {
+			}
+	
+			else {
 				array_push($errors, "Wrong username/password combination");
+				header('location: ./Login1.php');
+				// echo"hiii username/pass Wrong";
 			}
 		}	
 	
@@ -45,3 +48,10 @@ echo $username;
 	
 	
 ?>
+<?php  if (count($errors) > 0) : ?>
+	<div class="error">
+		<?php foreach ($errors as $error) : ?>
+			<p><?php echo $error ?></p>
+		<?php endforeach ?>
+	</div>
+<?php  endif ?>

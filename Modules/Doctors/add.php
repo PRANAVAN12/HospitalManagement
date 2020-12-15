@@ -17,6 +17,28 @@ if(isset($_POST['Submit'])) {
 	$gender = mysqli_real_escape_string($mysqli, $_POST['gender']);
 	$password = mysqli_real_escape_string($mysqli, $_POST['password']);
 
+
+
+	// Image Uploading Section
+	$targetDir = "uploads/";
+
+	$fileName = basename($_FILES["image"]["name"]);
+	$rand=rand();
+	$finalFileName=$rand."-". $fileName;
+	$targetFilePath = $targetDir.$finalFileName;
+	$fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
+
+
+	if(!empty($_FILES["image"]["name"])){
+		// Allow certain file formats
+		$allowTypes = array('jpg','png','jpeg',"PNG",'JPG',"JPEG");
+		// var_dump($_FILES["image"]["name"]);
+		if(in_array($fileType, $allowTypes)){
+			// Upload file to server
+			if(move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)){
+				
+
+
 	// checking empty fields
 	if(empty($username) || empty($email) || empty($mobile) || empty($password)|| empty($fullname || empty($gender) || empty($specialist))) {
 				
@@ -51,12 +73,25 @@ if(isset($_POST['Submit'])) {
 		// if all the fields are filled (not empty) 
 			
 		//insert data to database	
-		$result = mysqli_query($mysqli, "INSERT INTO doctors(fullname,username,email,mobile,specialist,gender,Password) VALUES('$fullname','$username','$email','$mobile','$specialist','$gender','$password')");
+		$result = mysqli_query($mysqli, "INSERT INTO doctors(fullname,username,email,mobile,specialist,gender,Password,image) VALUES('$fullname','$username','$email','$mobile','$specialist','$gender','$password','$finalFileName')");
 		
 		//redirectig to the display page. In our case, it is index.php
 		header("Location: List.php");
 	}
 }
+}else{
+	$statusMsg = "Sorry, there was an error uploading your file.";
+}
+}else{
+$statusMsg = 'Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.';
+}
+}else{
+$statusMsg = 'Please select a file to upload.';
+}
+// Image Uploading Section End
+
+
+
 ?>
 </body>
 </html>
@@ -70,13 +105,29 @@ if(isset($_POST['Submit'])) {
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	
 	crossorigin="anonymous">
+	<style>
+
+body {
+  
+    background-color: #607D8B;
+}
+.card {
+
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .55rem;
+    margin-right: 32%;
+    margin-left: 18%;
+    border: 4px solid #f0f0f0;
+    margin-bottom: 1.875rem;
+}
+		</style>
 </head>
 <body>
-<?php include '../../View/headers/adminheader.html';?>
+
 		<div class="container" style="margin-left: 20%; padding-top:5%">
 		<div class="card">
 			<div class="card-body">
-			<form class="form-detail" name="form1" method="post" action="add.php">
+			<form class="form-detail" name="form1" method="post" action="add.php" enctype="multipart/form-data">
 				<caption>
 					<h2>
 				
@@ -125,6 +176,12 @@ if(isset($_POST['Submit'])) {
 						 class="form-control"
 						name="password">
 				</fieldset>
+
+				<fieldset class="form-group">
+					<label> Image</label> 
+						<input 	 class="form-control" type="file" name="image" >
+				</fieldset>
+				
 				<button type="submit" name="Submit" class="btn btn-success">Save</button>
 				</form>
 			</div>

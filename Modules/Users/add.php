@@ -51,7 +51,7 @@ if(isset($_POST['Submit'])) {
 		// if all the fields are filled (not empty) 
 			
 		//insert data to database	
-		$result = mysqli_query($mysqli, "INSERT INTO users(fullname,username,email,mobile,age,gender,Password) VALUES('$fullname','$username','$email','$mobile','$age','$gender','$password')");
+		$result = mysqli_query($mysqli, "INSERT INTO users(fullname,username,email,mobile,age,gender,password) VALUES('$fullname','$username','$email','$mobile','$age','$gender','$password')");
 		
 			//redirectig to the display page. In our case, it is index.php
 			header("Location: List.php");
@@ -68,9 +68,25 @@ if(isset($_POST['Submit'])) {
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	
 	crossorigin="anonymous">
+	<style>
+
+body {
+  
+    background-color: #607D8B;
+}
+.card {
+
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .55rem;
+    margin-right: 32%;
+    margin-left: 18%;
+    border: 4px solid #f0f0f0;
+    margin-bottom: 1.875rem;
+}
+		</style>
 </head>
 <body>
-<?php include '../../View/headers/adminheader.html';?>
+
 		<div class="container" style="margin-left: 20%; padding-top:5%">
 		<div class="card">
 			<div class="card-body">
